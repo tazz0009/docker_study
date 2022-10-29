@@ -140,3 +140,48 @@ sudo docker exec -it jk cat /path/initPassword
 sudo docker logs jk
 ```
 
+## 9. MongoDB Docker
+
+```console
+docker pull mongo:4.4.10
+# linux
+docker run --name mongodb-container -v ~/data:/data/db -d -p 27017:27017 mongo
+
+# windows
+docker run --name mongodb -p 27017:27017 mongo:4.4.10
+docker run -dit --name mongodb -p 27017:27017 --restart unless-stopped mongo
+
+docker exec -it mongodb /bin/bash
+```
+
+## 10. MongoDB Auth
+
+```console
+$apt-get update
+
+$apt-get install vim
+
+$mongo
+
+> use admin
+
+# admin user 생성
+>db.createUser({user:'user1',pwd:'1234qwer',roles:[{role:'root',db:'admin'}]})
+
+# 이미 생성된 user의 role을 변경하고 싶을 경우
+>db.grantRolesToUser('user1',[{role:'root', db:'admin'}]) 
+
+# User정보를 확인하고 싶을 경우
+>use admin
+>db.getUsers()
+```
+
+```console
+# mongoauth 설정
+$vim /etc/mongod.conf
+
+security:
+  authorization:enable
+  
+$service mongod restart  
+```
